@@ -3,11 +3,11 @@ pub struct ram {
 }
 
 impl ram {
-    fn read_byte (self, adress: u16) {
-
+    pub fn read_byte (self, adress: u16) -> u8 {
+        return self.mem[adress as usize];
     }
 
-    fn write_byte (&mut self, adress: u16, value: u8) {
-
+    pub fn write_byte (&mut self, adress: u16, value: u8) {
+        self.mem[adress as usize] = value;
     }
-}
+}   
