@@ -27,13 +27,22 @@ impl Ram {
         ];
 
         let mut index = 0;
-        for sprite in &sprites {
+        let _ = &sprites.iter().for_each(|sprite|{
+            sprite.iter().for_each(|value|{
+                ram.mem[index] = *value;
+                index = index + 1;
+            });
+        });
+        
+/*         for sprite in &sprites {
             for char in sprite {
                 ram.mem[index] = *char;
                 index = index + 1;
             }
+        } */
+        for i in 0..0xFF {
+            println!("{:#X}", ram.mem[i]);
         }
-        
         return ram;
     }
 

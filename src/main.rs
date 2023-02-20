@@ -1,6 +1,9 @@
-pub mod ram;
+mod chip8;
+mod ram;
+mod cpu;
+mod bus;
 
 fn main() {
-    let hej = ram::Ram::new_ram();
-    println!("RAM: {:?}",hej);
+    let hej = cpu::Cpu::new_cpu();
+    println!("{:?}", hej)
 }
