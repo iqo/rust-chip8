@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Ram {
     mem: [u8; 4096],
 }
@@ -24,6 +25,15 @@ impl Ram {
             [0xF0, 0x80, 0xF0, 0x80, 0xF0], // E
             [0xF0, 0x80, 0xF0, 0x80, 0x80], // F
         ];
+
+        let mut index = 0;
+        for sprite in &sprites {
+            for char in sprite {
+                ram.mem[index] = *char;
+                index = index + 1;
+            }
+        }
+        
         return ram;
     }
 

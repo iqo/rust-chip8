@@ -1,5 +1,6 @@
 pub mod ram;
 
 fn main() {
-    println!("Hello, world!");
+    let hej = ram::Ram::new_ram();
+    println!("RAM: {:?}",hej);
 }
