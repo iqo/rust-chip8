@@ -25,21 +25,20 @@ impl Ram {
             [0xF0, 0x80, 0xF0, 0x80, 0xF0], // E
             [0xF0, 0x80, 0xF0, 0x80, 0x80], // F
         ];
-
         let mut index = 0;
-        let _ = &sprites.iter().for_each(|sprite|{
+/*         let _ = &sprites.iter().for_each(|sprite|{
             sprite.iter().for_each(|value|{
                 ram.mem[index] = *value;
                 index = index + 1;
             });
-        });
+        }); */
         
-/*         for sprite in &sprites {
+        for sprite in &sprites {
             for char in sprite {
                 ram.mem[index] = *char;
                 index = index + 1;
             }
-        } */
+        }
         for i in 0..0xFF {
             println!("{:#X}", ram.mem[i]);
         }

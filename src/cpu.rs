@@ -1,11 +1,13 @@
 use rand;
+use rand::Rng;
+use rand::rngs::ThreadRng;
 
 #[derive(Debug)]
 pub struct Cpu {
     vx: [u16; 16],
     i: u16,
     pc: u16,
-    rng: u16 // fixa med rng crate
+    rng: ThreadRng,
     
 
 }
@@ -15,8 +17,8 @@ impl Cpu {
         return Cpu {
             vx: [0; 16],
             i: 0,
-            pc: todo!(),
-            rng: todo!(),
+            pc: 0,
+            rng: rand::thread_rng(),
         };
     }
     
