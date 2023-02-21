@@ -6,9 +6,9 @@ pub struct Bus {
 }
 
 impl Bus  {
-    pub fn new_bus () -> Bus {
+    pub fn new() -> Bus {
         return Bus { 
-            ram: Ram::new_ram(), 
+            ram: Ram::new(), 
         };
     }
 }
