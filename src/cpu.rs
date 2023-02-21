@@ -1,6 +1,7 @@
 use rand;
 use rand::Rng;
 use rand::rngs::ThreadRng;
+use crate::bus::{self, Bus};
 
 const OPCODE_SIZE:usize =  2;
 const PROGRAM_START: u16 = 0x200;
@@ -37,5 +38,10 @@ impl Cpu {
             rng: rand::thread_rng(),
         };
     }
-    
+    fn get_opcode (&mut self, bus: &mut Bus) -> u16{
+        let hi = bus.ram_read_byte(self.pc) as u16;
+        let lo = bus.ram_read_byte(self.pc + 1) as u16;
+        
+        return (hi << 8) | lo;
+    }
 }
