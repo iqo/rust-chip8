@@ -53,3 +53,6 @@ impl Ram {
         self.mem[address as usize] = value;
     }
 }
+#[cfg(test)]
+#[path ="./ram_test.rs"]
+mod map_test;

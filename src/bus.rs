@@ -10,6 +10,7 @@ impl Bus  {
             ram: Ram::new(), 
         };
     }
+    
 
     pub fn ram_read_byte (&self, address: u16) -> u8 {
         return self.ram.read_byte(address);

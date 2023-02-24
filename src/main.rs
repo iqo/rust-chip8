@@ -4,6 +4,6 @@ mod cpu;
 mod bus;
 
 fn main() {
-    let hej = cpu::Cpu::new();
-    println!("{:?}", hej)
+    // let hej = cpu::Cpu::new();
+    // println!("{:?}", hej)
 }
