@@ -45,7 +45,7 @@ impl Cpu {
         let opcode = self.get_opcode();
     }
 
-    fn run_opode (&mut self, opcode: u16) {
+    fn run_opcode (&mut self, opcode: u16) {
         let nibbles = (
             (opcode & 0xF000) >> 12 as u8,
             (opcode & 0x0F00) >> 8 as u8,
@@ -62,6 +62,7 @@ impl Cpu {
             _ => ProgramCounter::Next,
         };
     }
+
     pub fn get_opcode (&mut self) -> u16{
         let high_byte = self.ram.read_byte(self.pc) as u16;
         let low_byte =  self.ram.read_byte(self.pc + 1) as u16;

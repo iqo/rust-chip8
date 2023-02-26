@@ -25,3 +25,23 @@ fn test_load_data() {
     assert_eq!(cpu.ram.read_byte(0x201), 2);
     assert_eq!(cpu.ram.read_byte(0x202), 3);
 }
+
+#[test]
+fn test_op_00e0_cls() {
+    
+}
+
+#[test]
+fn  test_op_00ee_ret() {
+    
+}
+
+#[test]
+fn  test_op_1nnn_jp_addr() {
+
+}
+
+#[test]
+fn  test_op_2nnn_cal_addr() {
+    
+}
