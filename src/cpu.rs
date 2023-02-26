@@ -1,6 +1,6 @@
 use rand;
-use rand::Rng;
-use rand::rngs::ThreadRng;
+// use rand::Rng;
+// use rand::rngs::ThreadRng;
 
 use crate::ram::Ram;
 
@@ -25,7 +25,7 @@ pub struct Cpu {
     pc: u16,
     sp :u8,
     stack: [u16; 16],
-    rng: ThreadRng,
+    // rng: ThreadRng,
 }
 
 impl Cpu {
@@ -37,7 +37,7 @@ impl Cpu {
             pc: PROGRAM_START,
             sp: 0,
             stack: [0; 16],
-            rng: rand::thread_rng(),
+            // rng: rand::thread_rng(),
         };
     }
 
