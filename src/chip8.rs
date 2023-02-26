@@ -14,7 +14,7 @@ impl Chip8 {
     }
 
     pub fn run_tick(&mut self) {
-        self.cpu.tick(&mut self.bus)
+        self.cpu.tick()
     }
     pub fn load_rom(&mut self, rom: &[u8]){
         for (i, &byte) in rom.iter().enumerate(){
