@@ -16,3 +16,12 @@ fn test_init_state() {
     assert_eq!(cpu.sp, 0);
     assert_eq!(cpu.stack, [0; 16]);
 }
+
+#[test]
+fn test_load_data() {
+    let mut cpu = Cpu::new();
+    cpu.load(&vec![1, 2, 3]);
+    assert_eq!(cpu.ram.read_byte(0x200), 1);
+    assert_eq!(cpu.ram.read_byte(0x201), 2);
+    assert_eq!(cpu.ram.read_byte(0x202), 3);
+}

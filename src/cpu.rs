@@ -2,7 +2,6 @@ use rand;
 use rand::Rng;
 use rand::rngs::ThreadRng;
 
-use crate::bus::{Bus, self};
 use crate::ram::Ram;
 
 const OPCODE_SIZE:u16 =  2;
@@ -41,13 +40,6 @@ impl Cpu {
             rng: rand::thread_rng(),
         };
     }
-/*     fn get_opcode (&mut self, bus: &mut Bus) -> u16{
-        let high_byte = bus.ram_read_byte(self.pc) as u16;
-        let low_byte = bus.ram_read_byte(self.pc + 1) as u16;
-        let reg =  (high_byte << 8) | low_byte;
-        println!("high: {:?}, low: {:?}, reg: {:?}", high_byte, low_byte, reg);
-        return reg;
-    } */
 
     pub fn tick (&mut self) {
         let opcode = self.get_opcode();
@@ -76,6 +68,17 @@ impl Cpu {
         let reg =  (high_byte << 8) | low_byte;
         println!("high: {:?}, low: {:?}, reg: {:?}", high_byte, low_byte, reg);
         return reg;
+    }
+
+    pub fn load(&mut self, rom: &[u8]) {
+        for (i, &byte) in rom.iter().enumerate(){
+            let addr = 0x200 + i;
+            if addr < 4096 {
+                self.ram.write_byte((0x200 + i) as u16, byte);
+            } else {
+                break;
+            }
+        }
     }
 }
 
