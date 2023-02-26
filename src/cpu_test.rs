@@ -8,9 +8,6 @@ fn build_cpu() -> Cpu {
     cpu.pc = START_PC;
     cpu.vx = [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7];
     return cpu;
-    fn build_bus() -> Bus {
-        
-    }
 } 
 #[test]
 fn test_init_state() {

@@ -6,7 +6,7 @@ use crate::bus::{Bus, self};
 use crate::ram::Ram;
 
 const OPCODE_SIZE:u16 =  2;
-const PROGRAM_START: u16 = 0x200;
+pub const PROGRAM_START: u16 = 0x200;
 
 enum ProgramCounter {
     Next,
@@ -60,6 +60,15 @@ impl Cpu {
             (opcode & 0x00F0) >> 4 as u8,
             (opcode & 0x000F) as u8
         );
+        let nnn = (opcode & 0x0FFF) as usize;
+        let kk = (opcode & 0x00FF) as u8;
+        let n = nibbles.1 as usize; 
+        let x =  nibbles.2 as usize; 
+        let y = nibbles.3 as usize; 
+
+        let pc_change = match nibbles {
+            _ => ProgramCounter::Next,
+        };
     }
 /*     pub fn get_opcode (&mut self) -> u16{
         let high_byte = self.ram.read_byte(self.pc) as u16;
