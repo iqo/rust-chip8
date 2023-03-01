@@ -10,10 +10,18 @@ pub const PROGRAM_START: u16 = 0x200;
 enum ProgramCounter {
     Next,
     Skip,
-    Jump(usize),
+    Jump(u16),
 }
 
-impl ProgramCounter {}
+impl ProgramCounter {
+    fn skip_if(skip_condition: bool) -> ProgramCounter {
+        if skip_condition {
+            return ProgramCounter::Skip;
+        } else {
+            return ProgramCounter::Next;
+        }
+    }
+}
 
 // #[derive(Debug)]
 pub struct Cpu {
@@ -115,6 +123,12 @@ impl Cpu {
             (0x0F, _, 0x06, 0x05) => self.op_code_Fx65(),
             _ => ProgramCounter::Next,
         };
+
+        match pc_change {
+            ProgramCounter::Next => self.pc = self.pc + OPCODE_SIZE,
+            ProgramCounter::Skip => self.pc = self.pc + (2 * OPCODE_SIZE),
+            ProgramCounter::Jump(addr) => self.pc = addr,
+        }
     }
     /*
        00E0 - CLS

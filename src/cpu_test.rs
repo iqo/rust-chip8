@@ -27,7 +27,17 @@ fn test_load_data() {
 }
 
 #[test]
-fn test_op_00e0_cls() {}
+fn test_op_00e0_cls() {
+    let mut cpu = build_cpu();
+    cpu.vram = [[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT];
+    cpu.run_opcode(0x00e0);
+    for x in 0..CHIP8_PIXEL_HEIGHT {
+        for y in 0..CHIP8_PIXEL_WIDTH {
+            assert_eq!(cpu.vram[x][y], 0);
+        }
+    }
+    assert_eq!(cpu.pc, NEXT_PC)
+}
 
 #[test]
 fn test_op_00ee_ret() {}
