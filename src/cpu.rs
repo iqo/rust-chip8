@@ -2,7 +2,7 @@ use rand;
 // use rand::Rng;
 // use rand::rngs::ThreadRng;
 
-use crate::ram::Ram;
+use crate::{ram::Ram, CHIP8_PIXEL_HEIGHT, CHIP8_PIXEL_WIDTH};
 
 const OPCODE_SIZE: u16 = 2;
 pub const PROGRAM_START: u16 = 0x200;
@@ -17,6 +17,8 @@ impl ProgramCounter {}
 
 // #[derive(Debug)]
 pub struct Cpu {
+    vram: [[u8; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
+    vram_changed: bool,
     ram: Ram,
     vx: [u16; 16],
     i: u16,
@@ -29,6 +31,8 @@ pub struct Cpu {
 impl Cpu {
     pub fn new() -> Self {
         return Cpu {
+            vram: [[0; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
+            vram_changed: false,
             ram: Ram::new(),
             vx: [0; 16],
             i: 0,
@@ -75,7 +79,7 @@ impl Cpu {
         let y = nibbles.3 as usize;
 
         let pc_change = match nibbles {
-            (0x00, 0x00, 0x0E, 0x00) => self.op_code_00E0(),
+            (0x00, 0x00, 0x0E, 0x00) => self.op_code_00E0(), // 00E0 - CLS
             (0x00, 0x00, 0x0E, 0x0E) => self.op_code_00EE(),
             (0x01, _, _, _) => self.op_code_1nnn(),
             (0x02, _, _, _) => self.op_code_2nnn(),
@@ -112,8 +116,17 @@ impl Cpu {
             _ => ProgramCounter::Next,
         };
     }
-
+    /*
+       00E0 - CLS
+       Clear the display.
+    */
     fn op_code_00E0(&mut self) -> ProgramCounter {
+        for x in 0..CHIP8_PIXEL_HEIGHT {
+            for y in 0..CHIP8_PIXEL_WIDTH {
+                self.vram[x][y] = 0;
+            }
+        }
+        self.vram_changed = true;
         return ProgramCounter::Next;
     }
 
