@@ -115,139 +115,139 @@ impl Cpu {
         };
     }
 
-    fn op_code_00e0() -> ProgramCounter {
+    fn op_code_00e0(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_00_ee() -> ProgramCounter {
+    fn op_code_00_ee(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_1nnn() -> ProgramCounter {
+    fn op_code_1nnn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_2nnn() -> ProgramCounter {
+    fn op_code_2nnn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_3xkk() -> ProgramCounter {
+    fn op_code_3xkk(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_4xkk() -> ProgramCounter {
+    fn op_code_4xkk(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_5xy0() -> ProgramCounter {
+    fn op_code_5xy0(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_6xkk() -> ProgramCounter {
+    fn op_code_6xkk(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_7xkk() -> ProgramCounter {
+    fn op_code_7xkk(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy0() -> ProgramCounter {
+    fn op_code_8xy0(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy1() -> ProgramCounter {
+    fn op_code_8xy1(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy2() -> ProgramCounter {
+    fn op_code_8xy2(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy3() -> ProgramCounter {
+    fn op_code_8xy3(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy4() -> ProgramCounter {
+    fn op_code_8xy4(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy5() -> ProgramCounter {
+    fn op_code_8xy5(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy6() -> ProgramCounter {
+    fn op_code_8xy6(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xy7() -> ProgramCounter {
+    fn op_code_8xy7(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_8xyE() -> ProgramCounter {
+    fn op_code_8xyE(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_9xy0() -> ProgramCounter {
+    fn op_code_9xy0(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Annn() -> ProgramCounter {
+    fn op_code_Annn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Bnnn() -> ProgramCounter {
+    fn op_code_Bnnn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Cxkk() -> ProgramCounter {
+    fn op_code_Cxkk(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Dxyn() -> ProgramCounter {
+    fn op_code_Dxyn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Ex9E() -> ProgramCounter {
+    fn op_code_Ex9E(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_ExA1() -> ProgramCounter {
+    fn op_code_ExA1(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx07() -> ProgramCounter {
+    fn op_code_Fx07(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx0A() -> ProgramCounter {
+    fn op_code_Fx0A(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx15() -> ProgramCounter {
+    fn op_code_Fx15(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx18() -> ProgramCounter {
+    fn op_code_Fx18(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx1E() -> ProgramCounter {
+    fn op_code_Fx1E(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx29() -> ProgramCounter {
+    fn op_code_Fx29(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx33() -> ProgramCounter {
+    fn op_code_Fx33(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx55() -> ProgramCounter {
+    fn op_code_Fx55(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_Fx65() -> ProgramCounter {
+    fn op_code_Fx65(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 }
