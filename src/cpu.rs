@@ -39,6 +39,24 @@ impl Cpu {
         };
     }
 
+    pub fn get_opcode(&mut self) -> u16 {
+        let high_byte = self.ram.read_byte(self.pc) as u16;
+        let low_byte = self.ram.read_byte(self.pc + 1) as u16;
+        let reg = (high_byte << 8) | low_byte;
+        println!("high: {:?}, low: {:?}, reg: {:?}", high_byte, low_byte, reg);
+        return reg;
+    }
+
+    pub fn load(&mut self, rom: &[u8]) {
+        for (i, &byte) in rom.iter().enumerate() {
+            let addr = 0x200 + i;
+            if addr < 4096 {
+                self.ram.write_byte((0x200 + i) as u16, byte);
+            } else {
+                break;
+            }
+        }
+    }
     pub fn tick(&mut self) {
         let opcode = self.get_opcode();
     }
@@ -61,24 +79,73 @@ impl Cpu {
         };
     }
 
-    pub fn get_opcode(&mut self) -> u16 {
-        let high_byte = self.ram.read_byte(self.pc) as u16;
-        let low_byte = self.ram.read_byte(self.pc + 1) as u16;
-        let reg = (high_byte << 8) | low_byte;
-        println!("high: {:?}, low: {:?}, reg: {:?}", high_byte, low_byte, reg);
-        return reg;
-    }
+    fn op_code_00e0() {}
 
-    pub fn load(&mut self, rom: &[u8]) {
-        for (i, &byte) in rom.iter().enumerate() {
-            let addr = 0x200 + i;
-            if addr < 4096 {
-                self.ram.write_byte((0x200 + i) as u16, byte);
-            } else {
-                break;
-            }
-        }
-    }
+    fn op_code_00EE() {}
+
+    fn op_code_1nnn() {}
+
+    fn op_code_2nnn() {}
+
+    fn op_code_3xkk() {}
+
+    fn op_code_4xkk() {}
+
+    fn op_code_5xy0() {}
+
+    fn op_code_6xkk() {}
+
+    fn op_code_7xkk() {}
+
+    fn op_code_8xy0() {}
+
+    fn op_code_8xy1() {}
+
+    fn op_code_8xy2() {}
+
+    fn op_code_8xy3() {}
+
+    fn op_code_8xy4() {}
+
+    fn op_code_8xy5() {}
+
+    fn op_code_8xy6() {}
+
+    fn op_code_8xy7() {}
+
+    fn op_code_8xyE() {}
+
+    fn op_code_9xy0() {}
+
+    fn op_code_Annn() {}
+
+    fn op_code_Bnnn() {}
+
+    fn op_code_Cxkk() {}
+
+    fn op_code_Dxyn() {}
+
+    fn op_code_Ex9E() {}
+
+    fn op_code_ExA1() {}
+
+    fn op_code_Fx07() {}
+
+    fn op_code_Fx0A() {}
+
+    fn op_code_Fx15() {}
+
+    fn op_code_Fx18() {}
+
+    fn op_code_Fx1E() {}
+
+    fn op_code_Fx29() {}
+
+    fn op_code_Fx33() {}
+
+    fn op_code_Fx55() {}
+
+    fn op_code_Fx65() {}
 }
 
 #[cfg(test)]
