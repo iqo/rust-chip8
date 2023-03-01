@@ -75,54 +75,51 @@ impl Cpu {
         let y = nibbles.3 as usize;
 
         let pc_change = match nibbles {
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
-            _ => ProgramCounter::Next,
+            _ => self.op_code_00E0(),
+            _ => self.op_code_00EE(),
+            _ => self.op_code_1nnn(),
+            _ => self.op_code_2nnn(),
+            _ => self.op_code_3xkk(),
+            _ => self.op_code_4xkk(),
+            _ => self.op_code_5xy0(),
+            _ => self.op_code_6xkk(),
+            _ => self.op_code_7xkk(),
+            _ => self.op_code_8xy0(),
+            _ => self.op_code_8xy1(),
+            _ => self.op_code_8xy2(),
+            _ => self.op_code_8xy3(),
+            _ => self.op_code_8xy4(),
+            _ => self.op_code_8xy5(),
+            _ => self.op_code_8xy6(),
+            _ => self.op_code_8xy7(),
+            _ => self.op_code_8xyE(),
+            _ => self.op_code_9xy0(),
+            _ => self.op_code_Annn(),
+            _ => self.op_code_Bnnn(),
+            _ => self.op_code_Cxkk(),
+            _ => self.op_code_Dxyn(),
+            _ => self.op_code_Ex9E(),
+            _ => self.op_code_ExA1(),
+            _ => self.op_code_Fx07(),
+            _ => self.op_code_Fx0A(),
+            _ => self.op_code_Fx15(),
+            _ => self.op_code_Fx18(),
+            _ => self.op_code_Fx1E(),
+            _ => self.op_code_Fx29(),
+            _ => self.op_code_Fx33(),
+            _ => self.op_code_Fx55(),
+            _ => self.op_code_Fx65(),
             _ => ProgramCounter::Next,
         };
     }
 
-    fn op_code_00e0(&mut self) -> ProgramCounter {
+    fn op_code_00E0(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
 
-    fn op_code_00_ee(&mut self) -> ProgramCounter {
+    fn op_code_00EE(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
-
     fn op_code_1nnn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
