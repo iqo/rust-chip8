@@ -29,11 +29,11 @@ impl Vram {
         return self.mem[x][y];
     }
 
-    pub fn get_vram_flag (&mut self) -> bool {
+    pub fn read_vram_flag (&mut self) -> bool {
         return self.vram_changed;
     }
 
-    pub fn set_vram_flag (&mut self ,vram_flag: bool) {
+    pub fn write_vram_flag (&mut self ,vram_flag: bool) {
         self.vram_changed = vram_flag;
     }
 }

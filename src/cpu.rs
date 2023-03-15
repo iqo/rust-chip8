@@ -138,7 +138,7 @@ impl Cpu {
     */
     fn op_code_00E0(&mut self) -> ProgramCounter {
         self.vram.clear_vram();
-        self.vram.set_vram_flag(true);
+        self.vram.write_vram_flag(true);
 /*         for x in 0..CHIP8_PIXEL_HEIGHT {
             for y in 0..CHIP8_PIXEL_WIDTH {
                 self.vram[x][y] = 0;

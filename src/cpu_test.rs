@@ -31,13 +31,15 @@ fn test_op_00e0_cls() {
     let mut cpu = build_cpu();
     // cpu.vram = [[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT];
     cpu.vram.write_vram([[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT]);
+    assert_eq!(cpu.vram.read_vram_flag(), false);
     cpu.run_opcode(0x00e0);
     for x in 0..CHIP8_PIXEL_HEIGHT {
         for y in 0..CHIP8_PIXEL_WIDTH {
             assert_eq!(cpu.vram.read_vram(x, y), 0);
         }
     }
-    assert_eq!(cpu.pc, NEXT_PC)
+    assert_eq!(cpu.pc, NEXT_PC);
+    assert_eq!(cpu.vram.read_vram_flag(), true);
 }
 
 #[test]
