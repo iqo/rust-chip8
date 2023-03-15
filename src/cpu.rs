@@ -2,7 +2,7 @@ use rand;
 // use rand::Rng;
 // use rand::rngs::ThreadRng;
 
-use crate::{ram::Ram, CHIP8_PIXEL_HEIGHT, CHIP8_PIXEL_WIDTH};
+use crate::{ram::Ram, CHIP8_PIXEL_HEIGHT, CHIP8_PIXEL_WIDTH, vram::Vram};
 
 const OPCODE_SIZE: u16 = 2;
 pub const PROGRAM_START: u16 = 0x200;
@@ -25,8 +25,9 @@ impl ProgramCounter {
 
 // #[derive(Debug)]
 pub struct Cpu {
-    vram: [[u8; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
-    vram_changed: bool,
+    vram: Vram,
+    //vram: [[u8; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
+    //vram_changed: bool,
     ram: Ram,
     vx: [u16; 16],
     i: u16,
@@ -39,8 +40,9 @@ pub struct Cpu {
 impl Cpu {
     pub fn new() -> Self {
         return Cpu {
-            vram: [[0; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
-            vram_changed: false,
+            vram: Vram::new(),
+            //vram: [[0; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
+            //vram_changed: false,
             ram: Ram::new(),
             vx: [0; 16],
             i: 0,
@@ -135,12 +137,14 @@ impl Cpu {
        Clear the display.
     */
     fn op_code_00E0(&mut self) -> ProgramCounter {
-        for x in 0..CHIP8_PIXEL_HEIGHT {
+        self.vram.clear_vram();
+        self.vram.set_vram_flag(true);
+/*         for x in 0..CHIP8_PIXEL_HEIGHT {
             for y in 0..CHIP8_PIXEL_WIDTH {
                 self.vram[x][y] = 0;
             }
-        }
-        self.vram_changed = true;
+        } 
+        self.vram_changed = true; */
         return ProgramCounter::Next;
     }
 
