@@ -5,15 +5,15 @@ const SKIPPED_PC: u16 = START_PC + (2 * OPCODE_SIZE);
 
 fn build_cpu() -> Cpu {
     let mut cpu = Cpu::new();
-    cpu.pc = START_PC;
+    cpu.program_counter = START_PC;
     cpu.vx = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
     return cpu;
 }
 #[test]
 fn test_init_state() {
     let cpu = Cpu::new();
-    assert_eq!(cpu.pc, 0x200);
-    assert_eq!(cpu.sp, 0);
+    assert_eq!(cpu.program_counter, 0x200);
+    assert_eq!(cpu.stack_pointer, 0);
     assert_eq!(cpu.stack, [0; 16]);
 }
 
@@ -38,7 +38,7 @@ fn test_op_00e0_cls() {
             assert_eq!(cpu.vram.read_vram(x, y), 0);
         }
     }
-    assert_eq!(cpu.pc, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PC);
     assert_eq!(cpu.vram.read_vram_flag(), true);
 }
 

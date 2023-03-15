@@ -31,8 +31,8 @@ pub struct Cpu {
     ram: Ram,
     vx: [u16; 16],
     i: u16,
-    pc: u16,
-    sp: u8,
+    program_counter: u16,
+    stack_pointer: u8,
     stack: [u16; 16],
     // rng: ThreadRng,
 }
@@ -46,16 +46,16 @@ impl Cpu {
             ram: Ram::new(),
             vx: [0; 16],
             i: 0,
-            pc: PROGRAM_START,
-            sp: 0,
+            program_counter: PROGRAM_START,
+            stack_pointer: 0,
             stack: [0; 16],
             // rng: rand::thread_rng(),
         };
     }
 
     pub fn get_opcode(&mut self) -> u16 {
-        let high_byte = self.ram.read_byte(self.pc) as u16;
-        let low_byte = self.ram.read_byte(self.pc + 1) as u16;
+        let high_byte = self.ram.read_byte(self.program_counter) as u16;
+        let low_byte = self.ram.read_byte(self.program_counter + 1) as u16;
         let reg = (high_byte << 8) | low_byte;
         println!("high: {:?}, low: {:?}, reg: {:?}", high_byte, low_byte, reg);
         return reg;
@@ -90,7 +90,7 @@ impl Cpu {
 
         let pc_change = match nibbles {
             (0x00, 0x00, 0x0E, 0x00) => self.op_code_00E0(), // 00E0 - CLS
-            (0x00, 0x00, 0x0E, 0x0E) => self.op_code_00EE(),
+            (0x00, 0x00, 0x0E, 0x0E) => self.op_code_00EE(), // 00EE - RET
             (0x01, _, _, _) => self.op_code_1nnn(),
             (0x02, _, _, _) => self.op_code_2nnn(),
             (0x03, _, _, _) => self.op_code_3xkk(),
@@ -127,9 +127,9 @@ impl Cpu {
         };
 
         match pc_change {
-            ProgramCounter::Next => self.pc = self.pc + OPCODE_SIZE,
-            ProgramCounter::Skip => self.pc = self.pc + (2 * OPCODE_SIZE),
-            ProgramCounter::Jump(addr) => self.pc = addr,
+            ProgramCounter::Next => self.program_counter = self.program_counter + OPCODE_SIZE,
+            ProgramCounter::Skip => self.program_counter = self.program_counter + (2 * OPCODE_SIZE),
+            ProgramCounter::Jump(addr) => self.program_counter = addr,
         }
     }
     /*
@@ -149,7 +149,9 @@ impl Cpu {
     }
 
     fn op_code_00EE(&mut self) -> ProgramCounter {
+        self.stack_pointer = self.stack_pointer - 1;
         return ProgramCounter::Next;
+        // return ProgramCounter::Jump(self.stack[self.stack_pointer]);
     }
     fn op_code_1nnn(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
