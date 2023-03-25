@@ -84,9 +84,9 @@ impl Cpu {
         );
         let nnn = (opcode & 0x0FFF) as usize;
         let kk = (opcode & 0x00FF) as u8;
-        let n = nibbles.1 as usize;
-        let x = nibbles.2 as usize;
-        let y = nibbles.3 as usize;
+        let x = nibbles.1 as usize;
+        let y = nibbles.2 as usize;
+        let n = nibbles.3 as usize;
 
         let pc_change = match nibbles {
             (0x00, 0x00, 0x0E, 0x00) => self.op_code_00E0(), // 00E0 - CLS
