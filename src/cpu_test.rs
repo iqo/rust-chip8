@@ -1,5 +1,5 @@
 use super::*;
-const START_PC: u16 = 200;
+const START_PC: u16 = 0xF00;
 const NEXT_PC: u16 = START_PC + OPCODE_SIZE;
 const SKIPPED_PC: u16 = START_PC + (2 * OPCODE_SIZE);
 
@@ -61,20 +61,45 @@ fn test_op_1nnn_jp_addr() {
 
 #[test]
 fn test_op_2nnn_cal_addr() {
-    
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x2666);
+    assert_eq!(cpu.program_counter, 0x666);
+    assert_eq!(cpu.stack_pointer, 1);
+    assert_eq!(cpu.stack[0], NEXT_PC);
 }
 
 #[test]
-fn test_op_5() {}
+fn test_op_3xkk() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x3201);
+    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x3200);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_6() {}
+fn test_op_4xkk() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x4200);
+    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x4201);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_7() {}
+fn test_op_5xkk() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x5540);
+    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x5500);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_8() {}
+fn test_op_6xkk() {}
 
 #[test]
 fn test_op_9() {}
