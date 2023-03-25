@@ -43,13 +43,26 @@ fn test_op_00e0_cls() {
 }
 
 #[test]
-fn test_op_00ee_ret() {}
+fn test_op_00ee_ret() {
+    let mut cpu = Cpu::new();
+    cpu.stack_pointer = 5;
+    cpu.stack[4] = 0x6666;
+    cpu.run_opcode(0x00ee);
+    assert_eq!(cpu.stack_pointer, 4);
+    assert_eq!(cpu.program_counter, 0x6666);
+}
 
 #[test]
-fn test_op_1nnn_jp_addr() {}
+fn test_op_1nnn_jp_addr() {
+    let mut cpu = Cpu::new();
+    cpu.run_opcode(0x1666);
+    assert_eq!(cpu.program_counter, 0x0666);
+}
 
 #[test]
-fn test_op_2nnn_cal_addr() {}
+fn test_op_2nnn_cal_addr() {
+    
+}
 
 #[test]
 fn test_op_5() {}

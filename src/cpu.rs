@@ -2,7 +2,7 @@ use rand;
 // use rand::Rng;
 // use rand::rngs::ThreadRng;
 
-use crate::{ram::Ram, CHIP8_PIXEL_HEIGHT, CHIP8_PIXEL_WIDTH, vram::Vram};
+use crate::{ram::Ram, vram::Vram, CHIP8_PIXEL_HEIGHT, CHIP8_PIXEL_WIDTH};
 
 const OPCODE_SIZE: u16 = 2;
 pub const PROGRAM_START: u16 = 0x200;
@@ -29,10 +29,10 @@ pub struct Cpu {
     //vram: [[u8; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT],
     //vram_changed: bool,
     ram: Ram,
-    vx: [u16; 16],
+    vx: [u8; 16],
     i: u16,
     program_counter: u16,
-    stack_pointer: u8,
+    stack_pointer: usize,
     stack: [u16; 16],
     // rng: ThreadRng,
 }
@@ -91,11 +91,11 @@ impl Cpu {
         let pc_change = match nibbles {
             (0x00, 0x00, 0x0E, 0x00) => self.op_code_00E0(), // 00E0 - CLS
             (0x00, 0x00, 0x0E, 0x0E) => self.op_code_00EE(), // 00EE - RET
-            (0x01, _, _, _) => self.op_code_1nnn(),
-            (0x02, _, _, _) => self.op_code_2nnn(),
-            (0x03, _, _, _) => self.op_code_3xkk(),
-            (0x04, _, _, _) => self.op_code_4xkk(),
-            (0x05, _, _, 0x00) => self.op_code_5xy0(),
+            (0x01, _, _, _) => self.op_code_1nnn(nnn.try_into().unwrap()),
+            (0x02, _, _, _) => self.op_code_2nnn(nnn.try_into().unwrap()),
+            (0x03, _, _, _) => self.op_code_3xkk(x, kk),
+            (0x04, _, _, _) => self.op_code_4xkk(x, kk),
+            (0x05, _, _, 0x00) => self.op_code_5xy0(x, y),
             (0x06, _, _, _) => self.op_code_6xkk(),
             (0x07, _, _, _) => self.op_code_7xkk(),
             (0x08, _, _, 0x00) => self.op_code_8xy0(),
@@ -139,38 +139,61 @@ impl Cpu {
     fn op_code_00E0(&mut self) -> ProgramCounter {
         self.vram.clear_vram();
         self.vram.write_vram_flag(true);
-/*         for x in 0..CHIP8_PIXEL_HEIGHT {
+        /*         for x in 0..CHIP8_PIXEL_HEIGHT {
             for y in 0..CHIP8_PIXEL_WIDTH {
                 self.vram[x][y] = 0;
             }
-        } 
+        }
         self.vram_changed = true; */
         return ProgramCounter::Next;
     }
-
+    /*
+        00EE - RET
+        Return from a subroutine.
+        The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
+    */
     fn op_code_00EE(&mut self) -> ProgramCounter {
         self.stack_pointer = self.stack_pointer - 1;
-        return ProgramCounter::Next;
-        // return ProgramCounter::Jump(self.stack[self.stack_pointer]);
+        return ProgramCounter::Jump(self.stack[self.stack_pointer]);
     }
-    fn op_code_1nnn(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
-    }
-
-    fn op_code_2nnn(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
-    }
-
-    fn op_code_3xkk(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
+    /*
+        1nnn - JP addr
+        Jump to location nnn.
+        The interpreter sets the program counter to nnn.
+    */
+    fn op_code_1nnn(&mut self, nnn: u16) -> ProgramCounter {
+        return ProgramCounter::Jump(nnn);
     }
 
-    fn op_code_4xkk(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
+    /*
+        Call subroutine at nnn.
+        The interpreter increments the stack pointer, then puts the current PC on the top of the stack. The PC is then set to nnn.
+    */
+    fn op_code_2nnn(&mut self, nnn: u16) -> ProgramCounter {
+        self.stack[self.stack_pointer] = self.program_counter + OPCODE_SIZE;
+        self.stack_pointer = self.stack_pointer + 1;
+        return ProgramCounter::Jump(nnn);
     }
-
-    fn op_code_5xy0(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
+    /*
+       Skip next instruction if Vx = kk.
+       The interpreter compares register Vx to kk, and if they are equal, increments the program counter by 2.
+    */
+    fn op_code_3xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
+        return ProgramCounter::skip_if(self.vx[x] == kk);
+    }
+    /*
+       Skip next instruction if Vx != kk.
+       The interpreter compares register Vx to kk, and if they are not equal, increments the program counter by 2.
+    */
+    fn op_code_4xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
+        return ProgramCounter::skip_if(self.vx[x] != kk);
+    }
+    /*
+       Skip next instruction if Vx = Vy.
+       The interpreter compares register Vx to register Vy, and if they are equal, increments the program counter by 2.
+    */
+    fn op_code_5xy0(&mut self, x: usize, y: usize) -> ProgramCounter {
+        return ProgramCounter::skip_if(self.vx[x] == self.vx[y]);
     }
 
     fn op_code_6xkk(&mut self) -> ProgramCounter {
