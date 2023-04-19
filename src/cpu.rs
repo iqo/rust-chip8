@@ -75,6 +75,14 @@ impl Cpu {
         let opcode = self.get_opcode();
     }
 
+    pub fn read_reg(&mut self, index: usize) -> u8 {
+        return self.v[index];
+    }
+
+    pub fn write_reg(&mut self, index: usize, value: u8) {
+        self.v[index] = value;
+    }
+
     fn run_opcode(&mut self, opcode: u16) {
         let nibbles = (
             (opcode & 0xF000) >> 12 as u8,
@@ -208,11 +216,11 @@ impl Cpu {
         Adds the value kk to the value of register Vx, then stores the result in Vx.
     */
     fn op_code_7xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        let vx: u8 = self.v[x];
-        let kk_value: u8 = kk;
+        let vx: u8 = self.read_reg(x);
+        let value_kk: u8 = kk;
+        let result: u8 = vx + value_kk;
 
-        let result: u8 = vx + kk_value;
-        self.v[x] = result;
+        self.write_reg(x, result);
         // self.v[x] = self.v[x] + kk;
         return ProgramCounter::Next;
     }
@@ -221,7 +229,8 @@ impl Cpu {
        Stores the value of register Vy in register Vx.
     */
     fn op_code_8xy0(&mut self, x: usize, y: usize) -> ProgramCounter {
-        self.v[x] = self.v[y];
+        let vy = self.read_reg(y);
+        self.write_reg(x, vy);
         return ProgramCounter::Next;
     }
     /*
@@ -232,7 +241,10 @@ impl Cpu {
        and if either bit is 1, then the same bit in the result is also 1. Otherwise, it is 0.
     */
     fn op_code_8xy1(&mut self, x: usize, y: usize) -> ProgramCounter {
-        self.v[x] |= self.v[y];
+        let vx = self.read_reg(x);
+        let vy = self.read_reg(y);
+        self.write_reg(x, vx | vy);
+        // self.v[x] |= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -243,7 +255,10 @@ impl Cpu {
         and if both bits are 1, then the same bit in the result is also 1. Otherwise, it is 0.
     */
     fn op_code_8xy2(&mut self, x: usize, y: usize) -> ProgramCounter {
-        self.v[x] &= self.v[y];
+        let vx = self.read_reg(x);
+        let vy = self.read_reg(y);
+        self.write_reg(x, vx & vy);
+        // self.v[x] &= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -254,7 +269,10 @@ impl Cpu {
         and if the bits are not both the same, then the corresponding bit in the result is set to 1. Otherwise, it is 0.
     */
     fn op_code_8xy3(&mut self, x: usize, y: usize) -> ProgramCounter {
-        self.v[x] &= self.v[y];
+        let vx = self.read_reg(x);
+        let vy = self.read_reg(y);
+        self.write_reg(x, vx ^ vy);
+        // self.v[x] ^= self.v[y];
         return ProgramCounter::Next;
     }
     /*
