@@ -100,14 +100,14 @@ impl Cpu {
             (0x07, _, _, _) => self.op_code_7xkk(x, kk),
             (0x08, _, _, 0x00) => self.op_code_8xy0(x, y),
             (0x08, _, _, 0x01) => self.op_code_8xy1(x, y),
-            (0x08, _, _, 0x02) => self.op_code_8xy2(),
-            (0x08, _, _, 0x03) => self.op_code_8xy3(),
-            (0x08, _, _, 0x04) => self.op_code_8xy4(),
-            (0x08, _, _, 0x05) => self.op_code_8xy5(),
-            (0x08, _, _, 0x06) => self.op_code_8xy6(),
-            (0x08, _, _, 0x07) => self.op_code_8xy7(),
-            (0x08, _, _, 0x0E) => self.op_code_8xyE(),
-            (0x09, _, _, 0x00) => self.op_code_9xy0(),
+            (0x08, _, _, 0x02) => self.op_code_8xy2(x, y),
+            (0x08, _, _, 0x03) => self.op_code_8xy3(x, y),
+            (0x08, _, _, 0x04) => self.op_code_8xy4(x, y),
+            (0x08, _, _, 0x05) => self.op_code_8xy5(x, y),
+            (0x08, _, _, 0x06) => self.op_code_8xy6(x),
+            (0x08, _, _, 0x07) => self.op_code_8xy7(x, y),
+            (0x08, _, _, 0x0E) => self.op_code_8xyE(x),
+            (0x09, _, _, 0x00) => self.op_code_9xy0(x, y),
             (0x0A, _, _, _) => self.op_code_Annn(),
             (0x0B, _, _, _) => self.op_code_Bnnn(),
             (0x0C, _, _, _) => self.op_code_Cxkk(),
@@ -208,10 +208,10 @@ impl Cpu {
         Adds the value kk to the value of register Vx, then stores the result in Vx.
     */
     fn op_code_7xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        let vx:u8 = self.v[x];
+        let vx: u8 = self.v[x];
         let kk_value: u8 = kk;
 
-        let result:u8 = vx + kk_value;
+        let result: u8 = vx + kk_value;
         self.v[x] = result;
         // self.v[x] = self.v[x] + kk;
         return ProgramCounter::Next;
@@ -242,7 +242,8 @@ impl Cpu {
         A bitwise AND compares the corrseponding bits from two values,
         and if both bits are 1, then the same bit in the result is also 1. Otherwise, it is 0.
     */
-    fn op_code_8xy2(&mut self) -> ProgramCounter {
+    fn op_code_8xy2(&mut self, x: usize, y: usize) -> ProgramCounter {
+        self.v[x] &= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -252,7 +253,8 @@ impl Cpu {
         An exclusive OR compares the corrseponding bits from two values,
         and if the bits are not both the same, then the corresponding bit in the result is set to 1. Otherwise, it is 0.
     */
-    fn op_code_8xy3(&mut self) -> ProgramCounter {
+    fn op_code_8xy3(&mut self, x: usize, y: usize) -> ProgramCounter {
+        self.v[x] &= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -261,7 +263,7 @@ impl Cpu {
         The values of Vx and Vy are added together. If the result is greater than 8 bits (i.e., > 255,) VF is set to 1, otherwise 0.
         Only the lowest 8 bits of the result are kept, and stored in Vx.
     */
-    fn op_code_8xy4(&mut self) -> ProgramCounter {
+    fn op_code_8xy4(&mut self, x: usize, y: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -269,7 +271,7 @@ impl Cpu {
 
         If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted from Vx, and the results stored in Vx.
     */
-    fn op_code_8xy5(&mut self) -> ProgramCounter {
+    fn op_code_8xy5(&mut self, x: usize, y: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -277,7 +279,7 @@ impl Cpu {
 
         If the least-significant bit of Vx is 1, then VF is set to 1, otherwise 0. Then Vx is divided by 2.
     */
-    fn op_code_8xy6(&mut self) -> ProgramCounter {
+    fn op_code_8xy6(&mut self, x: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -285,7 +287,7 @@ impl Cpu {
 
         If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy, and the results stored in Vx.
     */
-    fn op_code_8xy7(&mut self) -> ProgramCounter {
+    fn op_code_8xy7(&mut self, x: usize, y: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -293,7 +295,7 @@ impl Cpu {
 
     If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0. Then Vx is multiplied by 2.
          */
-    fn op_code_8xyE(&mut self) -> ProgramCounter {
+    fn op_code_8xyE(&mut self, x: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -301,7 +303,7 @@ impl Cpu {
 
         The values of Vx and Vy are compared, and if they are not equal, the program counter is increased by 2.
     */
-    fn op_code_9xy0(&mut self) -> ProgramCounter {
+    fn op_code_9xy0(&mut self, x: usize, y: usize) -> ProgramCounter {
         return ProgramCounter::Next;
     }
     /*
@@ -415,7 +417,7 @@ impl Cpu {
     fn op_code_Fx33(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
-    /*  
+    /*
         Store registers V0 through Vx in memory starting at location I.
 
         The interpreter copies the values of registers V0 through Vx into memory, starting at the address in I.
@@ -423,7 +425,7 @@ impl Cpu {
     fn op_code_Fx55(&mut self) -> ProgramCounter {
         return ProgramCounter::Next;
     }
-    /*  
+    /*
         Read registers V0 through Vx from memory starting at location I.
 
         The interpreter reads values from memory starting at location I into registers V0 through Vx.
