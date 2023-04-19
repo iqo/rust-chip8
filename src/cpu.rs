@@ -220,7 +220,6 @@ impl Cpu {
         let value_kk: u8 = kk;
         let result: u8 = vx + value_kk;
         self.write_reg(x, result);
-        // self.v[x] = self.v[x] + kk;
         return ProgramCounter::Next;
     }
     /*
@@ -243,7 +242,6 @@ impl Cpu {
         let vx = self.read_reg(x);
         let vy = self.read_reg(y);
         self.write_reg(x, vx | vy);
-        // self.v[x] |= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -257,7 +255,6 @@ impl Cpu {
         let vx = self.read_reg(x);
         let vy = self.read_reg(y);
         self.write_reg(x, vx & vy);
-        // self.v[x] &= self.v[y];
         return ProgramCounter::Next;
     }
     /*
@@ -271,7 +268,6 @@ impl Cpu {
         let vx = self.read_reg(x);
         let vy = self.read_reg(y);
         self.write_reg(x, vx ^ vy);
-        // self.v[x] ^= self.v[y];
         return ProgramCounter::Next;
     }
     /*
