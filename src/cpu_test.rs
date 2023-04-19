@@ -6,7 +6,7 @@ const SKIPPED_PC: u16 = START_PC + (2 * OPCODE_SIZE);
 fn build_cpu() -> Cpu {
     let mut cpu = Cpu::new();
     cpu.program_counter = START_PC;
-    cpu.vx = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+    cpu.v = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
     return cpu;
 }
 #[test]
