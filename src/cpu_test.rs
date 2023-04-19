@@ -132,39 +132,56 @@ fn test_op_8xy0() {
     cpu.run_opcode(0x8060);
     assert_eq!(cpu.read_reg(0), 0x03);
 }
-//OR
+//OR vx, vy
 #[test]
 fn test_op_8xy1() {
     // 0x0F or 0xF0 == 0xFF
     math_helper(0x0F, 0xF0, 1, 0xFF, 0);
 }
-//AND
+//AND vx, vy
 #[test]
 fn test_op_8xy2() {
     // 0x0F and 0xFF == 0x0F
     math_helper(0x0F, 0xFF, 2, 0x0F, 0);
 }
-//XOR
+//XOR vx, vy
 #[test]
 fn test_8xy3() {
     // 0x0F xor 0xFF == 0xF0
     math_helper(0x0F, 0xFF, 3, 0xF0, 0);
 }
-//Set Vx = Vx + Vy, set VF = carry.
+//ADD vx, vy
 #[test]
-fn test_op_8xy4() {}
-
+fn test_op_8xy4() {
+    math_helper(0x0F, 0x0F, 4, 0x1E, 0);
+    math_helper(0xFF, 0xFF, 4, 0xFE, 1);
+}
+//SUB vx, vy
 #[test]
-fn test_op_8xy5() {}
-
+fn test_op_8xy5() {
+    math_helper(0x0F, 0x01, 5, 0x0E, 1);
+    math_helper(0x0F, 0xFF, 5, 0x10, 0);
+}
+//SHR vx
 #[test]
-fn test_op_8xy6() {}
-
+fn test_op_8xy6() {
+        // 4 >> 1 == 2
+        math_helper(0x04, 0, 6, 0x02, 0);
+        // 5 >> 1 == 2 with carry
+        math_helper(0x05, 0, 6, 0x02, 1);
+}
+//SUBN vx
 #[test]
-fn test_op_8xy7() {}
-
+fn test_op_8xy7() {
+    math_helper(0x01, 0x0F, 7, 0x0E, 1);
+    math_helper(0xFF, 0x0F, 7, 0x10, 0);
+}
+//SHL vx
 #[test]
-fn test_op_8xyE() {}
+fn test_op_8xyE() {
+    math_helper(0b11000000, 0, 0x0e, 0b10000000, 1);
+    math_helper(0b00000111, 0, 0x0e, 0b00001110, 0);
+}
 
 #[test]
 fn test_op_19() {}
