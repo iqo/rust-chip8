@@ -99,7 +99,7 @@ impl Cpu {
             (0x06, _, _, _) => self.op_code_6xkk(x, kk),
             (0x07, _, _, _) => self.op_code_7xkk(x, kk),
             (0x08, _, _, 0x00) => self.op_code_8xy0(x, y),
-            (0x08, _, _, 0x01) => self.op_code_8xy1(),
+            (0x08, _, _, 0x01) => self.op_code_8xy1(x, y),
             (0x08, _, _, 0x02) => self.op_code_8xy2(),
             (0x08, _, _, 0x03) => self.op_code_8xy3(),
             (0x08, _, _, 0x04) => self.op_code_8xy4(),
@@ -208,7 +208,12 @@ impl Cpu {
         Adds the value kk to the value of register Vx, then stores the result in Vx.
     */
     fn op_code_7xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        self.v[x] = self.v[x] + kk;
+        let vx:u8 = self.v[x];
+        let kk_value: u8 = kk;
+
+        let result:u8 = vx + kk_value;
+        self.v[x] = result;
+        // self.v[x] = self.v[x] + kk;
         return ProgramCounter::Next;
     }
     /*
@@ -226,7 +231,8 @@ impl Cpu {
        A bitwise OR compares the corrseponding bits from two values,
        and if either bit is 1, then the same bit in the result is also 1. Otherwise, it is 0.
     */
-    fn op_code_8xy1(&mut self) -> ProgramCounter {
+    fn op_code_8xy1(&mut self, x: usize, y: usize) -> ProgramCounter {
+        self.v[x] |= self.v[y];
         return ProgramCounter::Next;
     }
     /*
