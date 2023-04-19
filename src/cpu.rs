@@ -208,7 +208,7 @@ impl Cpu {
         The interpreter puts the value kk into register Vx.
     */
     fn op_code_6xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        self.v[x] = kk;
+        self.write_reg(x, kk);
         return ProgramCounter::Next;
     }
     /*
@@ -219,7 +219,6 @@ impl Cpu {
         let vx: u8 = self.read_reg(x);
         let value_kk: u8 = kk;
         let result: u8 = vx + value_kk;
-
         self.write_reg(x, result);
         // self.v[x] = self.v[x] + kk;
         return ProgramCounter::Next;

@@ -9,6 +9,17 @@ fn build_cpu() -> Cpu {
     cpu.v = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
     return cpu;
 }
+
+fn math_helper(v1: u8, v2: u8, op_code: u16, result: u8, vf_flag: u8) {
+    let mut cpu = build_cpu();
+    cpu.write_reg(0, v1);
+    cpu.write_reg(1, v2);
+    cpu.write_reg(0x0f, 0);
+    cpu.run_opcode(0x8010 + op_code);
+    assert_eq!(cpu.read_reg(0), result);
+    assert_eq!(cpu.read_reg(0x0f), vf_flag);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 #[test]
 fn test_init_state() {
     let cpu = Cpu::new();
@@ -30,7 +41,8 @@ fn test_load_data() {
 fn test_op_00e0_cls() {
     let mut cpu = build_cpu();
     // cpu.vram = [[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT];
-    cpu.vram.write_vram([[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT]);
+    cpu.vram
+        .write_vram([[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT]);
     assert_eq!(cpu.vram.read_vram_flag(), false);
     cpu.run_opcode(0x00e0);
     for x in 0..CHIP8_PIXEL_HEIGHT {
@@ -89,7 +101,7 @@ fn test_op_4xkk() {
 }
 
 #[test]
-fn test_op_5xkk() {
+fn test_op_5xy0() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x5540);
     assert_eq!(cpu.program_counter, SKIPPED_PC);
@@ -99,37 +111,60 @@ fn test_op_5xkk() {
 }
 
 #[test]
-fn test_op_6xkk() {}
+fn test_op_6xkk() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x65ff);
+    assert_eq!(cpu.read_reg(5), 0xff);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_9() {}
+fn test_op_7xkk() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x76f0);
+    assert_eq!(cpu.read_reg(6), 0x0f3);
+    assert_eq!(cpu.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_10() {}
+fn test_op_8xy0() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x8060);
+    assert_eq!(cpu.read_reg(0), 0x03);
+}
+//OR
+#[test]
+fn test_op_8xy1() {
+    // 0x0F or 0xF0 == 0xFF
+    math_helper(0x0F, 0xF0, 1, 0xFF, 0);
+}
+//AND
+#[test]
+fn test_op_8xy2() {
+    // 0x0F and 0xFF == 0x0F
+    math_helper(0x0F, 0xFF, 2, 0x0F, 0);
+}
+//XOR
+#[test]
+fn test_8xy3() {
+    // 0x0F xor 0xFF == 0xF0
+    math_helper(0x0F, 0xFF, 3, 0xF0, 0);
+}
+//Set Vx = Vx + Vy, set VF = carry.
+#[test]
+fn test_op_8xy4() {}
 
 #[test]
-fn test_op_11() {}
+fn test_op_8xy5() {}
 
 #[test]
-fn test_op_12() {}
+fn test_op_8xy6() {}
 
 #[test]
-fn test_op_13() {}
+fn test_op_8xy7() {}
 
 #[test]
-fn test_op_14() {}
-
-#[test]
-fn test_op_15() {}
-
-#[test]
-fn test_op_16() {}
-
-#[test]
-fn test_op_17() {}
-
-#[test]
-fn test_op_18() {}
+fn test_op_8xyE() {}
 
 #[test]
 fn test_op_19() {}
