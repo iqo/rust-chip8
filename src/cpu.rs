@@ -277,11 +277,15 @@ impl Cpu {
         Only the lowest 8 bits of the result are kept, and stored in Vx.
     */
     fn op_code_8xy4(&mut self, x: usize, y: usize) -> ProgramCounter {
-        let vx:u16 = self.read_reg(x) as u16;
-        let vy:u16 = self.read_reg(y) as u16;
+        let vx: u16 = self.read_reg(x) as u16;
+        let vy: u16 = self.read_reg(y) as u16;
         let result = vx + vy;
         self.write_reg(x, result as u8);
-        self.write_reg(0x0f, if result > 0xFF { 1 } else { 0 });
+        if result > 0xFF {
+            self.write_reg(0x0f, 1)
+        } else {
+            self.write_reg(0x0f, 0)
+        };
         return ProgramCounter::Next;
     }
     /*
