@@ -187,21 +187,25 @@ impl Cpu {
        The interpreter compares register Vx to kk, and if they are equal, increments the program counter by 2.
     */
     fn op_code_3xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        return ProgramCounter::skip_if(self.v[x] == kk);
+        return ProgramCounter::skip_if(self.read_reg(x) == kk);
+        // return ProgramCounter::skip_if(self.v[x] == kk);
     }
     /*
        Skip next instruction if Vx != kk.
        The interpreter compares register Vx to kk, and if they are not equal, increments the program counter by 2.
     */
     fn op_code_4xkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
-        return ProgramCounter::skip_if(self.v[x] != kk);
+        return ProgramCounter::skip_if(self.read_reg(x) != kk);
+
+        // return ProgramCounter::skip_if(self.v[x] != kk);
     }
     /*
        Skip next instruction if Vx = Vy.
        The interpreter compares register Vx to register Vy, and if they are equal, increments the program counter by 2.
     */
     fn op_code_5xy0(&mut self, x: usize, y: usize) -> ProgramCounter {
-        return ProgramCounter::skip_if(self.v[x] == self.v[y]);
+        return ProgramCounter::skip_if(self.read_reg(x) == self.read_reg(y));
+        // return ProgramCounter::skip_if(self.v[x] == self.v[y]);
     }
     /*
         Set Vx = kk.
