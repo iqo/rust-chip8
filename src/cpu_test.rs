@@ -165,10 +165,10 @@ fn test_op_8xy5() {
 //SHR vx
 #[test]
 fn test_op_8xy6() {
-        // 4 >> 1 == 2
-        math_helper(0x04, 0, 6, 0x02, 0);
-        // 5 >> 1 == 2 with carry
-        math_helper(0x05, 0, 6, 0x02, 1);
+    // 4 >> 1 == 2
+    math_helper(0x04, 0, 6, 0x02, 0);
+    // 5 >> 1 == 2 with carry
+    math_helper(0x05, 0, 6, 0x02, 1);
 }
 //SUBN vx
 #[test]
@@ -178,7 +178,7 @@ fn test_op_8xy7() {
 }
 //SHL vx
 #[test]
-fn test_op_8xyE() {
+fn test_op_8xy_e() {
     math_helper(0b11000000, 0, 0x0e, 0b10000000, 1);
     math_helper(0b00000111, 0, 0x0e, 0b00001110, 0);
 }
