@@ -116,8 +116,8 @@ impl Cpu {
             (0x08, _, _, 0x07) => self.op_code_8xy7(x, y),
             (0x08, _, _, 0x0E) => self.op_code_8xyE(x),
             (0x09, _, _, 0x00) => self.op_code_9xy0(x, y),
-            (0x0A, _, _, _) => self.op_code_Annn(),
-            (0x0B, _, _, _) => self.op_code_Bnnn(),
+            (0x0A, _, _, _) => self.op_code_Annn( nnn),
+            (0x0B, _, _, _) => self.op_code_Bnnn(nnn),
             (0x0C, _, _, _) => self.op_code_Cxkk(),
             (0x0D, _, _, _) => self.op_code_Dxyn(),
             (0x0E, _, 0x09, 0x0E) => self.op_code_Ex9E(),
@@ -354,14 +354,17 @@ impl Cpu {
         The values of Vx and Vy are compared, and if they are not equal, the program counter is increased by 2.
     */
     fn op_code_9xy0(&mut self, x: usize, y: usize) -> ProgramCounter {
-        return ProgramCounter::Next;
+        let vx: u16 = self.read_reg(x) as u16;
+        let vy: u16 = self.read_reg(y) as u16;
+        return ProgramCounter::skip_if(vx != vy);
     }
     /*
        Set I = nnn.
 
        The value of register I is set to nnn.
     */
-    fn op_code_Annn(&mut self) -> ProgramCounter {
+    fn op_code_Annn(&mut self, nnn: usize) -> ProgramCounter {
+        self.i = nnn as u16;
         return ProgramCounter::Next;
     }
     /*
@@ -369,8 +372,9 @@ impl Cpu {
 
        The program counter is set to nnn plus the value of V0.
     */
-    fn op_code_Bnnn(&mut self) -> ProgramCounter {
-        return ProgramCounter::Next;
+    fn op_code_Bnnn(&mut self, nnn: usize) -> ProgramCounter {
+        let v0 = self.read_reg(0) as u16;
+        return ProgramCounter::Jump(v0 + (nnn as u16));
     }
     /*
         Set Vx = random byte AND kk.
