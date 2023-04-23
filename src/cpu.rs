@@ -298,6 +298,15 @@ impl Cpu {
         If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted from Vx, and the results stored in Vx.
     */
     fn op_code_8xy5(&mut self, x: usize, y: usize) -> ProgramCounter {
+        let vx: u16 = self.read_reg(x) as u16;
+        let vy: u16 = self.read_reg(y) as u16;
+        let result = vx - vy;
+        self.write_reg(x, result as u8);
+        if vx > vy {
+            self.write_reg(0x0f, 1)
+        } else {
+            self.write_reg(0x0f, 0)
+        };
         return ProgramCounter::Next;
     }
     /*
