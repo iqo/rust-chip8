@@ -178,7 +178,7 @@ fn test_op_8xy7() {
 }
 //SHL vx
 #[test]
-fn test_op_8xy_e() {
+fn test_op_8xye() {
     math_helper(0b11000000, 0, 0x0e, 0b10000000, 1);
     math_helper(0b00000111, 0, 0x0e, 0b00001110, 0);
 }

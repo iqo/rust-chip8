@@ -343,6 +343,9 @@ impl Cpu {
     If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0. Then Vx is multiplied by 2.
          */
     fn op_code_8xyE(&mut self, x: usize) -> ProgramCounter {
+        let vx = self.read_reg(x);
+        self.write_reg(0x0f, (vx & 0x80) >> 7);
+        self.write_reg(x, vx << 1);
         return ProgramCounter::Next;
     }
     /*
