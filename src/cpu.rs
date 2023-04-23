@@ -300,8 +300,8 @@ impl Cpu {
     fn op_code_8xy5(&mut self, x: usize, y: usize) -> ProgramCounter {
         let vx: u16 = self.read_reg(x) as u16;
         let vy: u16 = self.read_reg(y) as u16;
-        let result = vx.wrapping_sub(vy);
-        self.write_reg(x, result as u8);
+        let diff = vx.wrapping_sub(vy);
+        self.write_reg(x, diff as u8);
         if vx > vy {
             self.write_reg(0x0f, 1)
         } else {
@@ -321,11 +321,20 @@ impl Cpu {
         return ProgramCounter::Next;
     }
     /*
-        Set Vx = Vy - Vx, set VF = NOT borrow.x§
+        Set Vx = Vy - Vx, set VF = NOT borrow.
 
         If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy, and the results stored in Vx.
     */
     fn op_code_8xy7(&mut self, x: usize, y: usize) -> ProgramCounter {
+        let vx: u16 = self.read_reg(x) as u16;
+        let vy: u16 = self.read_reg(y) as u16;
+        let diff = vy.wrapping_sub(vx);
+        self.write_reg(x, diff as u8);
+        if vy > vx {
+            self.write_reg(0x0f, 1)
+        } else {
+            self.write_reg(0x0f, 0)
+        };
         return ProgramCounter::Next;
     }
     /*
