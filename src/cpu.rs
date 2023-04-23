@@ -1,4 +1,4 @@
-use rand;
+use rand::{self, Rng};
 // use rand::Rng;
 // use rand::rngs::ThreadRng;
 
@@ -118,7 +118,7 @@ impl Cpu {
             (0x09, _, _, 0x00) => self.op_code_9xy0(x, y),
             (0x0A, _, _, _) => self.op_code_annn( nnn.try_into().unwrap()),
             (0x0B, _, _, _) => self.op_code_bnnn(nnn.try_into().unwrap()),
-            (0x0C, _, _, _) => self.op_code_cxkk(),
+            (0x0C, _, _, _) => self.op_code_cxkk(x, kk),
             (0x0D, _, _, _) => self.op_code_dxyn(),
             (0x0E, _, 0x09, 0x0E) => self.op_code_ex9e(),
             (0x0E, _, 0x0A, 0x01) => self.op_code_exa1(),
@@ -382,7 +382,9 @@ impl Cpu {
         The interpreter generates a random number from 0 to 255, which is then ANDed with the value kk.
         The results are stored in Vx. See instruction 8xy2 for more information on AND.
     */
-    fn op_code_cxkk(&mut self) -> ProgramCounter {
+    fn op_code_cxkk(&mut self, x: usize, kk: u8) -> ProgramCounter {
+        let mut rng = rand::thread_rng();
+        self.write_reg(x, rng.gen::<u8>() & kk);
         return ProgramCounter::Next;
     }
     /*
