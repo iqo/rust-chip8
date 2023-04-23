@@ -184,49 +184,65 @@ fn test_op_8xye() {
 }
 
 #[test]
-fn test_op_19() {}
+fn test_op_code_9xy0() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0x90e0);
+    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    let mut processor = build_cpu();
+    processor.run_opcode(0x9010);
+    assert_eq!(processor.program_counter, NEXT_PC);
+}
 
 #[test]
-fn test_op_20() {}
+fn test_op_annn() {
+    let mut cpu = build_cpu();
+    cpu.run_opcode(0xa123);
+    assert_eq!(cpu.i, 0x123);
+}
 
 #[test]
-fn test_op_21() {}
+fn test_op_bnnn() {
+    let mut cpu = build_cpu();
+    cpu.write_reg(0, 3);
+    cpu.run_opcode(0xb123);
+    assert_eq!(cpu.program_counter, 0x126);
+}
 
 #[test]
-fn test_op_22() {}
+fn test_op_dxyn() {}
 
 #[test]
-fn test_op_23() {}
+fn test_op_ex9e() {}
 
 #[test]
-fn test_op_24() {}
+fn test_op_exa1() {}
 
 #[test]
-fn test_op_25() {}
+fn test_op_fx07() {}
 
 #[test]
-fn test_op_26() {}
+fn test_op_fx0a() {}
 
 #[test]
-fn test_op_27() {}
+fn test_op_fx15() {}
 
 #[test]
-fn test_op_28() {}
+fn test_op_fx18() {}
 
 #[test]
-fn test_op_29() {}
+fn test_op_fx1e() {}
 
 #[test]
-fn test_op_30() {}
+fn test_op_fx29() {}
 
 #[test]
-fn test_op_31() {}
+fn test_op_fx33() {}
 
 #[test]
-fn test_op_32() {}
+fn test_op_fx55() {}
 
 #[test]
-fn test_op_33() {}
+fn test_op_fx65() {}
 
 #[test]
 fn test_op_34() {}
