@@ -300,7 +300,7 @@ impl Cpu {
     fn op_code_8xy5(&mut self, x: usize, y: usize) -> ProgramCounter {
         let vx: u16 = self.read_reg(x) as u16;
         let vy: u16 = self.read_reg(y) as u16;
-        let result = vx - vy;
+        let result = vx.wrapping_sub(vy);
         self.write_reg(x, result as u8);
         if vx > vy {
             self.write_reg(0x0f, 1)
