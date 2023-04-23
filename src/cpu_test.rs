@@ -184,7 +184,7 @@ fn test_op_8xye() {
 }
 
 #[test]
-fn test_op_code_9xy0() {
+fn test_op_9xy0() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x90e0);
     assert_eq!(cpu.program_counter, SKIPPED_PC);
