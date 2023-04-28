@@ -396,7 +396,11 @@ impl Cpu {
         If the sprite is positioned so part of it is outside the coordinates of the display, it wraps around to the opposite side of the screen.
         See instruction 8xy3 for more information on XOR, and section 2.4, Display, for more information on the Chip-8 screen and sprites.
     */
-    fn op_code_dxyn(&mut self) -> ProgramCounter {
+    fn op_code_dxyn(&mut self, x: usize, y: usize, n: usize) -> ProgramCounter {
+        self.write_reg(0x0f, 0);
+        for byte in 0..n {
+            let y = (self.read_reg(y) as usize + byte) % CHIP8_PIXEL_HEIGHT; 
+        }
         return ProgramCounter::Next;
     }
     /*

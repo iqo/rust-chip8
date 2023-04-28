@@ -207,6 +207,7 @@ fn test_op_bnnn() {
     cpu.run_opcode(0xb123);
     assert_eq!(cpu.program_counter, 0x126);
 }
+#[test]
 fn test_op_cxkk() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0xc000);
@@ -216,6 +217,7 @@ fn test_op_cxkk() {
 }
 #[test]
 fn test_op_dxyn() {
+    let mut cpu = build_cpu();
     
 }
 
