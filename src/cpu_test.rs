@@ -237,9 +237,33 @@ fn test_op_dxyn() {
     assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 #[test]
-fn test_op_dxyn_wrap_horizontal() {}
+fn test_op_dxyn_wrap_horizontal() {
+    let mut cpu = build_cpu();
+    let x = CHIP8_PIXEL_WIDTH - 4;
+    cpu.i = 0;
+    cpu.ram.write_byte(0, 0b11111111);
+    cpu.write_reg(0, x as u8);
+    cpu.write_reg(1, 0);
+    cpu.run_opcode(0xd011);
+
+    assert_eq!(cpu.vram.read_vram(x - 1, 0 ), 0);
+    assert_eq!(cpu.vram.read_vram(x, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(x + 1, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(x + 2, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(x + 3, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(0, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(1, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(2, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(3, 0 ), 1);
+    assert_eq!(cpu.vram.read_vram(4, 0 ), 0);
+
+    assert_eq!(cpu.read_reg(0x0f), 0);
+
+}
 #[test]
-fn test_op_dxyn_wrap_vertical() {}
+fn test_op_dxyn_wrap_vertical() {
+    let mut cpu = build_cpu();
+}
 
 #[test]
 fn test_op_ex9e() {}
