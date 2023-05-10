@@ -263,6 +263,8 @@ fn test_op_dxyn_wrap_horizontal() {
 #[test]
 fn test_op_dxyn_wrap_vertical() {
     let mut cpu = build_cpu();
+    let y = CHIP8_PIXEL_HEIGHT - 1;
+    cpu.i = 0;
 }
 
 #[test]
