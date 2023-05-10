@@ -25,6 +25,9 @@ impl Vram {
         return self.mem = mem;
     }
 
+    pub fn write_vram_adress (&mut self,x: usize, y: usize, mem: u8) {
+        return self.mem[x][y] = mem;
+    }
     pub fn read_vram(&mut self, x: usize, y:usize) -> u8{
         return self.mem[x][y];
     }

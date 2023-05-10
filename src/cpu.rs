@@ -119,7 +119,7 @@ impl Cpu {
             (0x0A, _, _, _) => self.op_code_annn( nnn.try_into().unwrap()),
             (0x0B, _, _, _) => self.op_code_bnnn(nnn.try_into().unwrap()),
             (0x0C, _, _, _) => self.op_code_cxkk(x, kk),
-            (0x0D, _, _, _) => self.op_code_dxyn(),
+            (0x0D, _, _, _) => self.op_code_dxyn(x, y, n),
             (0x0E, _, 0x09, 0x0E) => self.op_code_ex9e(),
             (0x0E, _, 0x0A, 0x01) => self.op_code_exa1(),
             (0x0F, _, 0x00, 0x07) => self.op_code_fx07(),
@@ -147,12 +147,6 @@ impl Cpu {
     fn op_code_00E0(&mut self) -> ProgramCounter {
         self.vram.clear_vram();
         self.vram.write_vram_flag(true);
-        /*         for x in 0..CHIP8_PIXEL_HEIGHT {
-            for y in 0..CHIP8_PIXEL_WIDTH {
-                self.vram[x][y] = 0;
-            }
-        }
-        self.vram_changed = true; */
         return ProgramCounter::Next;
     }
     /*
