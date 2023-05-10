@@ -41,6 +41,10 @@ fn test_load_data() {
 fn test_op_00e0_cls() {
     let mut cpu = build_cpu();
     // cpu.vram = [[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT];
+/*     cpu.vram
+    .write_vram_adress(1, 0,CHIP8_PIXEL_WIDTH as u8);
+    cpu.vram
+    .write_vram_adress(0, 1,CHIP8_PIXEL_HEIGHT as u8); */
     cpu.vram
         .write_vram([[128; CHIP8_PIXEL_WIDTH]; CHIP8_PIXEL_HEIGHT]);
     assert_eq!(cpu.vram.read_vram_flag(), false);
