@@ -1,11 +1,11 @@
 use super::*;
-const START_PC: u16 = 0xF00;
-const NEXT_PC: u16 = START_PC + OPCODE_SIZE;
-const SKIPPED_PC: u16 = START_PC + (2 * OPCODE_SIZE);
+const START_PROGRAM_COUNTER: u16 = 0xF00;
+const NEXT_PROGRAM_COUNTER: u16 = START_PROGRAM_COUNTER + OPCODE_SIZE;
+const SKIPPED_PROGRAM_COUNTER: u16 = START_PROGRAM_COUNTER + (2 * OPCODE_SIZE);
 
 fn build_cpu() -> Cpu {
     let mut cpu = Cpu::new();
-    cpu.program_counter = START_PC;
+    cpu.program_counter = START_PROGRAM_COUNTER;
     cpu.v = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
     return cpu;
 }
@@ -18,7 +18,7 @@ fn math_helper(v1: u8, v2: u8, op_code: u16, result: u8, vf_flag: u8) {
     cpu.run_opcode(0x8010 + op_code);
     assert_eq!(cpu.read_reg(0), result);
     assert_eq!(cpu.read_reg(0x0f), vf_flag);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 #[test]
 fn test_init_state() {
@@ -50,7 +50,7 @@ fn test_op_00e0_cls() {
             assert_eq!(cpu.vram.read_vram(x, y), 0);
         }
     }
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
     assert_eq!(cpu.vram.read_vram_flag(), true);
 }
 
@@ -77,37 +77,37 @@ fn test_op_2nnn_cal_addr() {
     cpu.run_opcode(0x2666);
     assert_eq!(cpu.program_counter, 0x666);
     assert_eq!(cpu.stack_pointer, 1);
-    assert_eq!(cpu.stack[0], NEXT_PC);
+    assert_eq!(cpu.stack[0], NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
 fn test_op_3xkk() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x3201);
-    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    assert_eq!(cpu.program_counter, SKIPPED_PROGRAM_COUNTER);
     let mut cpu = build_cpu();
     cpu.run_opcode(0x3200);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
 fn test_op_4xkk() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x4200);
-    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    assert_eq!(cpu.program_counter, SKIPPED_PROGRAM_COUNTER);
     let mut cpu = build_cpu();
     cpu.run_opcode(0x4201);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
 fn test_op_5xy0() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x5540);
-    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    assert_eq!(cpu.program_counter, SKIPPED_PROGRAM_COUNTER);
     let mut cpu = build_cpu();
     cpu.run_opcode(0x5500);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
@@ -115,7 +115,7 @@ fn test_op_6xkk() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x65ff);
     assert_eq!(cpu.read_reg(5), 0xff);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
@@ -123,7 +123,7 @@ fn test_op_7xkk() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x76f0);
     assert_eq!(cpu.read_reg(6), 0x0f3);
-    assert_eq!(cpu.program_counter, NEXT_PC);
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
@@ -187,10 +187,10 @@ fn test_op_8xye() {
 fn test_op_9xy0() {
     let mut cpu = build_cpu();
     cpu.run_opcode(0x90e0);
-    assert_eq!(cpu.program_counter, SKIPPED_PC);
+    assert_eq!(cpu.program_counter, SKIPPED_PROGRAM_COUNTER);
     let mut processor = build_cpu();
     processor.run_opcode(0x9010);
-    assert_eq!(processor.program_counter, NEXT_PC);
+    assert_eq!(processor.program_counter, NEXT_PROGRAM_COUNTER);
 }
 
 #[test]
@@ -218,8 +218,28 @@ fn test_op_cxkk() {
 #[test]
 fn test_op_dxyn() {
     let mut cpu = build_cpu();
-    
+    cpu.i = 0;
+    cpu.ram.write_byte(0, 0b11111111);
+    cpu.ram.write_byte(1, 0b00000000);
+    cpu.vram.write_vram_adress(0, 0, 1);
+    cpu.vram.write_vram_adress(1, 0, 1);
+    cpu.vram.write_vram_adress(0, 1, 0);
+    cpu.vram.write_vram_adress(1, 1, 1);
+    cpu.write_reg(0, 0);
+    cpu.run_opcode(0xd002);
+
+    assert_eq!(cpu.vram.read_vram(0, 0), 0);
+    assert_eq!(cpu.vram.read_vram(1, 0), 1);
+    assert_eq!(cpu.vram.read_vram(0, 1), 1);
+    assert_eq!(cpu.vram.read_vram(1, 1), 0);
+    assert_eq!(cpu.read_reg(0x0f), 1);
+    assert!(cpu.vram.read_vram_flag());
+    assert_eq!(cpu.program_counter, NEXT_PROGRAM_COUNTER);
 }
+#[test]
+fn test_op_dxyn_wrap_horizontal() {}
+#[test]
+fn test_op_dxyn_wrap_vertical() {}
 
 #[test]
 fn test_op_ex9e() {}
