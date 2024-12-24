@@ -1,5 +1,18 @@
 use crate::bus::ram::Ram;
-
+enum ProgramCounter {
+    Next,
+    Skip,
+    Jump(usize)
+}
+impl ProgramCounter {
+    fn skip_if(condition: bool) -> ProgramCounter {
+        if condition {
+            ProgramCounter::Skip
+        } else {
+            ProgramCounter::Next
+        }
+    }
+}
 pub struct Cpu {
     ram: Ram,
     //ram: vRam
