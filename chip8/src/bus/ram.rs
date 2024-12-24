@@ -1,5 +1,5 @@
 use crate::constants::{CHIP8_RAM, SPRITES};
-
+#[derive(Debug)]
 pub struct Ram {
     mem: [u8; CHIP8_RAM],
 }
@@ -10,12 +10,12 @@ impl Ram {
         for i in 0..SPRITES.len() {
             ram.mem[i] = SPRITES[i];
         }
-        todo!()
+        return ram;
     }
-    pub fn read_byte(&self, adress: u16) {
-        todo!()
+    pub fn read_byte(&self, adress: usize) -> u8 {
+        return self.mem[adress];
     }
-    pub fn write_byte(&self, adress: u16, value: u8) {
+    pub fn write_byte(&self, _adress: u16, _value: u8) {
         todo!()
     }
 }

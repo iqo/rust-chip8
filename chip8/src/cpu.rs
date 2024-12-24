@@ -1,4 +1,4 @@
-use crate::drivers::ram::Ram;
+use crate::bus::ram::Ram;
 
 pub struct Cpu {
     ram: Ram,
