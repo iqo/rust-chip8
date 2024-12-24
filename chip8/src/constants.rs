@@ -1,6 +1,8 @@
 pub const CHIP8_PIXEL_WIDTH: usize = 64;
 pub const CHIP8_PIXEL_HEIGHT: usize = 32;
 pub const CHIP8_RAM: usize = 4096;
+pub const PROGRAM_START: u16 = 0x200;
+pub const OPCODE_SIZE: u16 = 2;
 pub const SPRITES: [u8; 80] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
