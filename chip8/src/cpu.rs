@@ -10,3 +10,6 @@ pub struct Cpu {
     //stack_pointer
     //rng
 }
+#[cfg(test)]
+#[path ="./cpu_test.rs"]
+mod cpu_test;

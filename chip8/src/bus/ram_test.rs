@@ -1,6 +1,6 @@
 use super::*;
 fn build_ram() -> Ram {
-    let mut ram = Ram::new();
+    let ram = Ram::new();
     return ram;
 } 
 
