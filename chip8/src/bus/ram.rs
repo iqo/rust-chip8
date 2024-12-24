@@ -12,10 +12,13 @@ impl Ram {
         }
         return ram;
     }
-    pub fn read_byte(&self, adress: usize) -> u8 {
+    pub fn read_bit(&self, adress: usize) -> u8 {
         return self.mem[adress];
     }
-    pub fn write_byte(&self, _adress: u16, _value: u8) {
-        todo!()
+    pub fn write_bit(&mut self, adress: usize, value: u8) {
+        self.mem[adress] = value;
     }
 }
+#[cfg(test)]
+#[path ="./ram_test.rs"]
+mod ram_test;
